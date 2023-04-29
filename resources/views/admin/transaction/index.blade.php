@@ -14,22 +14,15 @@
                 <div class="card">
                     <div class="card-header" style="width: 100%">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <a href="{{ route('transactions.create') }}"
                                     class="btn btn-sm btn-primary pull-right">Create New Transaction</a>
                             </div>
                             <div class="col-md-2">
                                 <select class="form-control" name="status">
-                                    <option value="2">All</option>
-                                    <option value="1">Finished</option>
-                                    <option value="0">Unfinished</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select class="form-control" name="date">
-                                    <option value="2">All</option>
-                                    <option value="month">this month</option>
-                                    <option value="1">Over late</option>
+                                    <option value=>All</option>
+                                    <option value="finished">Finished</option>
+                                    <option value="unfinished">Unfinished</option>
                                 </select>
                             </div>
                         </div>
@@ -153,7 +146,7 @@
                     const _this = this;
                     _this.table = $('#dataTables').DataTable({
                         ajax: {
-                            url: _this.apiUrl + '?status=2',
+                            url: _this.apiUrl,
                             type: 'GET',
                         },
                         columns: columns
@@ -185,12 +178,6 @@
             status = $('select[name=status]').val();
 
             controller.table.ajax.url(apiUrl + '?status=' + status).load();
-
-        });
-        $('select[name=date]').on('change', function() {
-            date= $('select[name=date]').val();
-
-            controller.table.ajax.url(apiUrl + '?date=' + date).load();
 
         });
     </script>

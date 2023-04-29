@@ -29,7 +29,7 @@ class TransactionController extends Controller
 
     public function api(Request $request)
     {
-        if ($request->status < 2) {
+        if ($request->status) {
             $transactions = Transaction::where('status', '=', $request->status)
                 ->select(
                     'transaction_id',
@@ -45,7 +45,7 @@ class TransactionController extends Controller
                 ->leftJoin('books', 'transaction_details.book_id', '=', 'books.id')
                 ->groupBy('transaction_details.transaction_id', 'members.name', 'date_start', 'date_end', 'status')
                 ->get();
-        } else if ($request->status == 2) {
+        } else{
             $transactions = Transaction::select(
                 'transaction_id',
                 'members.name',
@@ -77,9 +77,7 @@ class TransactionController extends Controller
                 return $numberDays;
             })
             ->addColumn('status_transaction', function ($transaction) {
-                $status_validate = validate_boolean($transaction->status);
-
-                $status_transaction = validate_transactionStatus($status_validate);
+                $status_transaction = $transaction->status;;
                 return $status_transaction;
             })
             ->addColumn('rupiah', function ($transaction) {
@@ -126,6 +124,7 @@ class TransactionController extends Controller
             $transaction->member_id = $data['member_id'];
             $transaction->date_start = $data['date_start'];
             $transaction->date_end = $data['date_end'];
+            $transaction->status = 'unfinished';
             $transaction->save();
 
             $total_book = count($data['book_id']);
@@ -137,10 +136,7 @@ class TransactionController extends Controller
                         'transaction_id' => $transaction->id,
                         'book_id' => $data['book_id'][$item],
                     );
-                    $qty = Book::select('qty')->where('id', '=', $data['book_id'][$item])->pluck('qty');
-                    $newQty = update_stock1($qty, false);
-
-                    Book::where('id', '=', $data['book_id'][$item])->update(['qty' => $newQty]);
+                    Book::where('id', '=', $data['book_id'][$item])->decrement('qty', 1);
                     TransactionDetail::create($data2);
                 }
             }
@@ -189,12 +185,6 @@ class TransactionController extends Controller
         $select = TransactionDetail::select('*')->where('transaction_id', '=', $transaction_id)->pluck('book_id');
         $select_books = json_decode(json_encode($select), true);
 
-
-        //return gettype($array);
-        //return $select_books;
-
-        //return $tes1;
-        //return $tes3;
         return view('admin.transaction.edit', compact('transaction', 'members', 'books', 'select_books'));
     }
 
@@ -208,12 +198,9 @@ class TransactionController extends Controller
     public function update(Request $request, Transaction $transaction)
     {
         $data = $request->all();
-        //dd($data);
 
-        $updated = validate_boolean($data['status'] != $transaction->status);
-        // $b= [$data['status'],$transaction->status];
+        $updated = validate_checkThings($data['status'], $transaction->status);
 
-        //dd($updated);
         TransactionDetail::where('transaction_id', $transaction->id)->delete();
 
         try {
@@ -228,11 +215,9 @@ class TransactionController extends Controller
                 'status' => $data['status'],
             ]);
 
-            //dd($transaction);
-
             $status = $transaction->status;
-            $newStatus = $transaction->status;
-            $status1 = validate_boolean($status);
+            $newStatus = $data['status'];
+            $status1 = $status;
             $total_book = count($data['book_id']);
 
             //dd($status1);
@@ -243,11 +228,12 @@ class TransactionController extends Controller
                         'book_id' => $data['book_id'][$item],
                     );
 
-                    if ($updated == true) {
-                        $qty = Book::select('qty')->where('id', '=', $data['book_id'][$item])->pluck('qty');
-                        $newQty = update_stock1($qty, $status1);
-
-                        Book::where('id', '=', $data['book_id'][$item])->update(['qty' => $newQty]);
+                    if ($updated == false) {
+                        if ($status == 'finished') {
+                            Book::where('id', '=', $data['book_id'][$item])->increment('qty', 1);
+                        } else {
+                            Book::where('id', '=', $data['book_id'][$item])->decrement('qty', 1);
+                        }
                     }
                     TransactionDetail::create($data2);
                 }

@@ -15,13 +15,11 @@ return new class extends Migration
     {
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('transaction_id');
-            $table->unsignedBigInteger('book_id');
-            $table->integer('qty');
+            $table->integer('qty')->default(1);
             $table->timestamps();
 
-            $table->foreign('transaction_id')->references('id')->on('transactions');
-            $table->foreign('book_id')->references('id')->on('books');
+            $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('book_id')->constrained('books')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

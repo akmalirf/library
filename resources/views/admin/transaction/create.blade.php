@@ -55,19 +55,6 @@
               </select>
             </div>
           </div>
-          <!-- <div class="form-group row"  >
-            <div class="col-4"><label>Status</label></div>
-            <div class="col-8">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" value="0" name="status" required>
-                <label class="form-check-label">Unfinished</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" value="1" name="status">
-                <label class="form-check-label">Finished</label>
-              </div>
-            </div>
-          </div> -->
         </div>
         <div class="card-footer">
           <button type="submit" class="btn btn-primary">Submit</button>

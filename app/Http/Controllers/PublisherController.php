@@ -28,10 +28,6 @@ class PublisherController extends Controller
     {
         $publishers = Publisher::all();
 
-        // foreach ($publishers as $key => $publisher) {
-        //     $publisher->date = convert_date($publisher->created_at);
-        // }
-
         $datatables = datatables()->of($publishers)
                             ->addColumn('date', function($publisher){
                                 return convert_date($publisher->created_at);

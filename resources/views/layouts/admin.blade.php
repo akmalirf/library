@@ -68,14 +68,13 @@
                 </li>
                 <!-- Notifications Dropdown Menu -->
                 <?php
-                
                 use Illuminate\Support\Facades\DB;
                 use App\Models\Transaction;
                 use App\Models\Member;
                 
-                $transaction = Transaction::where('status', '0' and 'date_end' < date('Y/m/d'))->count();
+                $transaction = Transaction::where('status', 'unfinished')->count();
                 $transactionDetails = Transaction::with('member')
-                    ->where('status', '0' and 'date_end' < date('Y/m/d'))
+                    ->where('status', 'unfinished')
                     ->get();
                 ?>
                 <li class="nav-item dropdown">
@@ -140,25 +139,10 @@
                     </div>
                 </div>
 
-                <!-- SidebarSearch Form -->
-                <div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search"
-                            aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-          with font-awesome or any other icon font library -->
                         <li class="nav-item">
                             <a href="{{ url('dashboard') }}"
                                 class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
@@ -233,52 +217,26 @@
                                 </p>
                             </a>
                         </li>
-                        <!-- <li class="nav-item">
-            <a href="{{ url('transactionDetails') }}" class="nav-link {{ request()->is('transactionDetails') ? 'active' : '' }}">
-              <i class="far	fa fa-calendar nav-icon"></i>
-              <p>
-                Transaction Detail
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ url('users') }}" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
-              <i class="far fa-id-badge nav-icon"></i>
-              <p>
-                User
-              </p>
-            </a>
-          </li> -->
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
-
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
                             <h1 class="m-0" style="text-transform: capitalize;">@yield('header')</h1>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- /.content-header -->
-
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     @yield('content')
-                </div><!-- /.container-fluid -->
+                </div>
             </section>
-            <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
         <footer class="main-footer">
             <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
             All rights reserved.

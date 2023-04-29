@@ -18,16 +18,13 @@ return new class extends Migration
             $table->integer('isbn');
             $table->string('title', 64);
             $table->integer('year');
-            $table->unsignedBigInteger('publisher_id');
-            $table->unsignedBigInteger('author_id');
-            $table->unsignedBigInteger('catalog_id');
             $table->integer('qty');
             $table->integer('price');
             $table->timestamps();
 
-            $table->foreign('publisher_id')->references('id')->on('publishers');
-            $table->foreign('author_id')->references('id')->on('authors');
-            $table->foreign('catalog_id')->references('id')->on('catalogs');
+            $table->foreignId('publisher_id')->constrained('publishers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('author_id')->constrained('authors')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('catalog_id')->constrained('catalogs')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

@@ -43,7 +43,7 @@
         <div class="form-group row">
           <div class="col-4"><label>Status</label></div>
           <div class="col-8">
-            <h5>{{validate_transactionStatus($transactionDetails->status)}}</h5>
+            <h5>{{$transactionDetails->status}}</h5>
           </div>
         </div>
       </div>

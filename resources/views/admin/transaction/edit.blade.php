@@ -60,11 +60,11 @@
             <div class="col-4"><label>Status</label></div>
             <div class="col-8">
                         <div class="form-check">
-                          <input class="form-check-input" value="1" type="radio" name="status" {{ $transaction->status == 1 ? 'checked' : '' }}>
+                          <input class="form-check-input" value="finished" type="radio" name="status" {{ $transaction->status == "finished" ? 'checked' : '' }}>
                           <label class="form-check-label">Finished</label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" value="0" type="radio" name="status" {{ $transaction->status == 0 ? 'checked' : '' }}>
+                          <input class="form-check-input" value="unfinished" type="radio" name="status" {{ $transaction->status == "unfinished" ? 'checked' : '' }}>
                           <label class="form-check-label">Unfinished</label>
                         </div>
             </div>

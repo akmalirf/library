@@ -15,13 +15,12 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('member_id');
             $table->date('date_start');
             $table->date('date_end');
-            $table->boolean('status');
+            $table->string('status');
             $table->timestamps();
 
-            $table->foreign('member_id')->references('id')->on('members');
+            $table->foreignId('member_id')->constrained('members')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

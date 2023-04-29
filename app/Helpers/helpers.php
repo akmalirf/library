@@ -19,10 +19,10 @@
     };
   };
   function validate_transactionStatus($value){
-    if($value == true) {
-      return "Finished";
+    if($value == "finished") {
+      return true;
     }else{
-      return "Unfinished";
+      return false;
     };
   };
   function validate_valueIn($value,$inArray){
@@ -31,17 +31,6 @@
     }else{
       return 0;
     };
-  };
-  function update_stock1($stock,$status) {
-    $stockArray = json_decode(json_encode($stock), true);
-    if($status == true){
-      $ValueArray = array(1);
-    }else{
-      $ValueArray = array(-1);
-    }
-    $merge = array_merge($stockArray ,$ValueArray) ;
-    $sum = array_sum($merge) ;
-    return $sum;  
   };
   function objectToArray($object){
     $array = json_decode(json_encode($object), true);
